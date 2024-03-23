@@ -1,2 +1,1 @@
-# dotslash5.0
-# codingNinjas
+# dotslash5.0   [codingNinjas]
