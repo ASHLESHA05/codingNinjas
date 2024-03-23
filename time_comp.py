@@ -2,7 +2,7 @@
 import google.generativeai as genai
 
 # Configure and set up model
-genai.configure(api_key="YOUR_GEMINI_API_KEY")
+genai.configure(api_key="ENTER_YOUR_GEMINI_API_KEY")
 generation_config = {
     "temperature": 0.9,
     "top_p": 1,
@@ -37,22 +37,15 @@ convo = model.start_chat(history=[])
 
 def get_time(code_snippet):
     try:
-        convo.send_message(code_snippet)
-
-        # Request time complexity analysis
-        convo.send_message("Please analyze the time complexity of this code snippet.")
+        convo = model.start_chat(history=[])
+        convo.send_message(code_snippet + "\nPlease analyze the time complexity of this code snippet.")
 
         # Extract and print only the time complexity information
         response = convo.last.text
         time_complexity = response.split("O(")[1].split(")")[0]
         print("Time Complexity:", "O(" + time_complexity + ")")
 
-        # # Additional parsing for state and other analysis
-        try:
-            analysis = response.split("Here are the analysis results:")[1].split("Time Complexity:")[0].strip()
-        except:
-            pass    
-        return "Time Complexity:" + "O(" + time_complexity + ")"
+        return "Time Complexity:" + " O(" + time_complexity + ")"
 
     except Exception as e:
         import traceback
