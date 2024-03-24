@@ -13,6 +13,7 @@ const CodeEditor = () => {
   const [input, setInput] = useState("");
   const [inference, setInference] = useState("");
   const [selectedLanguage, setSelectedLanguage] = useState("c_cpp");
+  const [loading, setLoading] = useState(false);
   const editorRef = useRef(null);
   let timer;
 
@@ -20,6 +21,7 @@ const CodeEditor = () => {
     try {
       // Clear previous output
       setOutput("");
+      setLoading(true);
 
       // Send code and input to server for execution
       const response = await axios.post("http://localhost:5000/run-c-code", {
@@ -34,11 +36,14 @@ const CodeEditor = () => {
       // Handle errors
       console.error("Error running C code:", error);
       setOutput("Error: " + error.toString());
+    } finally {
+      setLoading(false);
     }
   };
 
   const sendCodeToBackend = async (codeToSend) => {
     try {
+      setLoading(true);
       const response = await axios.post("http://localhost:5000/time-comp", {
         code: codeToSend,
       });
@@ -47,6 +52,8 @@ const CodeEditor = () => {
       setInference(result.output);
     } catch (error) {
       console.error("Error running C code:", error);
+    } finally {
+      setLoading(false);
     }
   };
   
@@ -61,6 +68,7 @@ const CodeEditor = () => {
           const operationName = line.replace("//", "").trim();
           console.log("Operation:", operationName);
           try {
+            setLoading(true);
             const response = await axios.post(
               "http://localhost:5000/get-code",
               { algoName: operationName }
@@ -69,6 +77,8 @@ const CodeEditor = () => {
             appendText(result.output);
           } catch (error) {
             console.log(error);
+          } finally {
+            setLoading(false);
           }
         }
       }
@@ -157,6 +167,7 @@ const CodeEditor = () => {
           </div>
         </div>
         <div className="observation">
+          {loading && <div className="loading">Loading...<div className="loading-spinner"></div></div>}
           <textarea
             className="observation-area"
             style={{
