@@ -92,3 +92,29 @@ h3 {
   background-color: #272822;
   color: #f8f8f2;
 }
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-spinner {
+  border: 4px solid rgba(255, 255, 255, 0.5);
+  border-left-color: #333;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  color: white;
+  animation: spin 1s linear infinite;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
